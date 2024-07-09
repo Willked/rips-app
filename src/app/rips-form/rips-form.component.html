@@ -1,0 +1,151 @@
+<div class="row">
+  <h1>GENERADOR DE RIPS</h1>
+  <h5>Generación de RIPS en formato JSON</h5>
+</div>
+
+<div class="register-form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Datos de la factura</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label>Número factura</label>
+            <input
+              type="text"
+              formControlName="numFactura"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['numFactura'].errors }"
+            />
+            <div *ngIf="submitted && f['numFactura'].errors" class="invalid-feedback">
+              <div *ngIf="f['numFactura'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>Fecha factura</label>
+            <input
+              type="date"
+              formControlName="fecFactura"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['fecFactura'].errors }"
+            />
+            <div *ngIf="submitted && f['fecFactura'].errors" class="invalid-feedback">
+              <div *ngIf="f['fecFactura'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>Valor factura</label>
+            <input
+              type="number"
+              formControlName="valFactura"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['valFactura'].errors }"
+            />
+            <div *ngIf="submitted && f['valFactura'].errors" class="invalid-feedback">
+              <div *ngIf="f['valFactura'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>código de la entidad</label>
+            <input
+              type="text"
+              formControlName="codEntidad"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['codEntidad'].errors }"
+            />
+            <div *ngIf="submitted && f['codEntidad'].errors" class="invalid-feedback">
+              <div *ngIf="f['codEntidad'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-8">
+            <label>Nombre de la entidad</label>
+            <input
+              type="text"
+              formControlName="nomEntidad"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['nomEntidad'].errors }"
+            />
+            <div *ngIf="submitted && f['nomEntidad'].errors" class="invalid-feedback">
+              <div *ngIf="f['nomEntidad'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>Número contrato</label>
+            <input
+              type="text"
+              formControlName="numContrato"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['numContrato'].errors }"
+            />
+            <div *ngIf="submitted && f['numContrato'].errors" class="invalid-feedback">
+              <div *ngIf="f['numContrato'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>Plan Beneficios</label>
+            <input
+              type="text"
+              formControlName="planBeneficios"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['planBeneficios'].errors }"
+            />
+            <div *ngIf="submitted && f['planBeneficios'].errors" class="invalid-feedback">
+              <div *ngIf="f['planBeneficios'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label>Número poliza</label>
+            <input
+              type="text"
+              formControlName="numPoliza"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['numPoliza'].errors }"
+            />
+            <div *ngIf="submitted && f['numPoliza'].errors" class="invalid-feedback">
+              <div *ngIf="f['numPoliza'].errors['required']">* Campo requerido</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Register</button>
+          <button
+            type="button"
+            (click)="onReset()"
+            class="btn btn-warning float-right"
+          >
+            Reset
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Datos del usuario</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
