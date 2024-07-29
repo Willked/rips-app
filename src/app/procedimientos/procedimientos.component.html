@@ -1,0 +1,163 @@
+<div class="row mb-3">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h2 class="card-title">Datos del procedimiento</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Fecha</label>
+            <div class="form-group">
+              <input
+                type="date"
+                formControlName="fecProcedimiento"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['fecProcedimiento'].errors }"
+                value="{{ currentDate | date: 'dd/MM/yyyy' }}"
+              />
+              <div *ngIf="submitted && f['fecProcedimiento'].errors" class="invalid-feedback">
+                <div *ngIf="f['fecProcedimiento'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Hora</label>
+            <div class="form-group">
+              <input
+                type="time"
+                formControlName="horaProcedimiento"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['horaProcedimiento'].errors }"
+              />
+              <div *ngIf="submitted && f['horaProcedimiento'].errors" class="invalid-feedback">
+                <div *ngIf="f['horaProcedimiento'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-7 mb-3"></div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Procedimiento</label>
+            <div class="form-group">
+              <input
+                type="text"
+                formControlName="codProcedimiento"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['codProcedimiento'].errors }"
+              />
+              <div *ngIf="submitted && f['codProcedimiento'].errors" class="invalid-feedback">
+                <div *ngIf="f['codProcedimiento'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Via de ingreso</label>
+            <div class="form-group">
+              <select
+                  formControlName="viaIngreso"
+                  class="form-control"
+                >
+                <option value="01">Demanda espontánea</option>
+                <option value="02">Derivado de consulta externa</option>
+                <option value="03">Derivado de urgencias</option>
+                <option value="04">Derivado de hospitalización</option>
+                <option value="05">Derivado de sala de cirugía</option>
+                <option value="06">Derivado de sala de partos</option>
+                <option value="07">Recién nacido en la institución</option>
+                <option value="08">Recién nacido en otra institución</option>
+                <option value="09">Derivado o referido de hospitalización domiciliaria</option>
+                <option value="10">Derivado de atención domiciliaria</option>
+                <option value="11">Derivado de telemedicina</option>
+                <option value="12">Derivado de jornada de salud</option>
+                <option value="13">Referido de otra institución</option>
+                <option value="14">Contrarreferido de otra institución</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Valor</label>
+            <div class="form-group">
+              <input
+                type="number"
+                formControlName="valorProcedimiento"
+                class="form-control"
+                [value]="valorOutput"
+                [ngClass]="{ 'is-invalid': submitted && f['valorProcedimiento'].errors }"
+              />
+              <div *ngIf="submitted && f['valorProcedimiento'].errors" class="invalid-feedback">
+                <div *ngIf="f['valorProcedimiento'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Tipo de procedimiento</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoProcedimiento"
+                  class="form-control"
+                >
+                <option *ngFor="let servicio of serviciosClinica" [value]="servicio.codigo">
+                  {{ servicio.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Finalidad</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoDx"
+                  class="form-control"
+                >
+                <option value="15">Diagnóstico</option>
+                <option value="16">Tratamiento</option>
+                <option value="17">Rehabilitación</option>
+                <option value="44">Otra</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3 mt-4">
+            <button type="submit" class="btn btn-outline-primary">Agregar item</button>
+          </div>
+        </div>
+      </form>
+      <br/>
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead class="table-light">
+              <tr class="table-primary">
+                  <th scope="col">Fecha<br/>Hora</th>
+                  <th scope="col">Consulta</th>
+                  <th scope="col">Tipo<br/>Consulta</th>
+                  <th scope="col">Finalidad</th>
+                  <th scope="col">Dx prin</th>
+                  <th scope="col">Dx Rel</th>
+                  <th scope="col">Tipo Dx</th>
+                  <th scope="col">profesional</th>
+                  <th scope="col">Valor</th>
+                  <th>acción</th>
+              </tr>
+          </thead>
+          <tbody class="table-border-bottom-0 table-color">
+            <tr *ngIf="procedimientos.length === 0">
+              <td colspan="10" class="text-center">No hay registros!</td>
+            </tr>
+            <tr *ngFor="let proc of procedimientos" class="">
+                <td class="align-middle">{{proc.fecProcedimiento | date: 'dd/MM/yyyy'}}<br/>{{proc.horaProcedimiento}}</td>
+                <td class="align-middle">{{proc.codProcedimiento}}</td>
+                <td class="align-middle">{{proc.tipoProcedimiento}}</td>
+                <td class="align-middle">{{proc.tipoDx}}</td>
+                <td class="align-middle">{{proc.dxPrincipal}}</td>
+                <td class="align-middle">{{proc.dxRelacionado1}}</td>
+                <td class="align-middle">{{proc.tipoDxConsulta}}</td>
+                <td class="align-middle">{{proc.nombreMedico}}</td>
+                <td class="align-middle">{{proc.valor}}</td>
+                <td class="align-middle text-center">
+                  <button type="button" (click)="onRemove(proc.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br/>
+    </div>
+  </div>
+</div>

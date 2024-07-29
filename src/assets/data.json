@@ -1,0 +1,87 @@
+{
+  "clinica":[
+    {
+      "nombre": "ODONTOMEDICAS SAS",
+      "nit": "901482537",
+      "codigo": "173800302601"
+    }
+  ],
+  "servicios": [
+    {
+      "codigo": "211",
+      "nombre": "CIRUGIA ORAL",
+      "medico":{
+        "nombre": "JUAN PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "1111111111"
+      }
+    },
+    {
+      "codigo": "311",
+      "nombre": "ENDODONCIA",
+      "medico":{
+        "nombre": "MARIA PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "2222222222"
+      }
+    },
+    {
+      "codigo": "334",
+      "nombre": "ODONTOLOGIA GENERAL",
+      "medico":{
+        "nombre": "WILLIAM PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "3333333333"
+      }
+    },
+    {
+      "codigo": "347",
+      "nombre": "REHABILITACION ORAL",
+      "medico":{
+        "nombre": "LINA PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "44444444444"
+      }
+    },
+    {
+      "codigo": "396",
+      "nombre": "ODONTOPEDIATRIA",
+      "medico":{
+        "nombre": "VIVIANA PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "55555555555"
+      }
+    },
+    {
+      "codigo": "748",
+      "nombre": "RADIOLOGIA ODONTOLOGICA",
+      "medico":{
+        "nombre": "GABRIEL PEREZ",
+        "tipoDocumento": "CC",
+        "documento": "666666666666"
+      }
+    }
+  ],
+  "consultas":[
+    {
+      "codigo": "890703",
+      "nombre": "CONSULTA ODONTOLOGICA - 890703",
+      "precio": "36800"
+    },
+    {
+      "codigo": "890303",
+      "nombre": "CONSULTA ODONTOLOGICA - 890303",
+      "precio": "29300"
+    }
+  ],
+  "diagnosticos":[
+    {
+      "codigo": "K040",
+      "nombre": "Pulpitis"
+    },
+    {
+      "codigo": "S025",
+      "nombre": "Fractura de dientes"
+    }
+  ]
+}
