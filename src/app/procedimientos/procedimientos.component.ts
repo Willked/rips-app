@@ -10,13 +10,13 @@ import { DataGeneralService } from '../data-general.service';
 export class ProcedimientosComponent implements OnInit {
   @Output() sendProcedimientos = new EventEmitter<any[]>();
   form: FormGroup = new FormGroup({
-    fecProcedimiento: new FormGroup(""),
-    horaProcedimiento: new FormGroup(""),
-    codProcedimiento: new FormGroup(""),
+    fecha: new FormGroup(""),
+    hora: new FormGroup(""),
+    codigo: new FormGroup(""),
     viaIngreso: new FormGroup(""),
     tipoProcedimiento: new FormGroup(""),
     tipoDx: new FormGroup(""),
-    valorProcedimiento: new FormGroup("")
+    valor: new FormGroup("")
 
   });
   currentDate = new Date().toISOString().substring(0, 10);
@@ -31,7 +31,7 @@ export class ProcedimientosComponent implements OnInit {
   nombreMedico = '';
   documentoMedico = '';
   tipoDocumentoMedico = '';
-  valorOutput = 0;
+  items = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,15 +42,15 @@ export class ProcedimientosComponent implements OnInit {
     console.log("procedimientosComponent@ngOnInit");
 
     this.form = this.formBuilder.group({
-      fecProcedimiento: [this.currentDate, [Validators.required]],
-      horaProcedimiento: [this.currentTime, [Validators.required]],
-      codProcedimiento: ['', [Validators.required]],
+      fecha: [this.currentDate, [Validators.required]],
+      hora: [this.currentTime, [Validators.required]],
+      codigo: ['', [Validators.required]],
       viaIngreso: ['02', [Validators.required]],
       tipoProcedimiento: ['334', []],
       tipoDx: ['15', []],
       dxPrincipal: ['S025', [Validators.required]],
       dxRelacionado1: ['K040', [Validators.required]],
-      valorProcedimiento: ['0', [Validators.required]]
+      valor: ['0', [Validators.required, Validators.min(1)]]
     });
     this.dataGeneralService.getData().subscribe(data => {
       this.serviciosClinica = data.servicios;
@@ -73,10 +73,10 @@ export class ProcedimientosComponent implements OnInit {
       nombreMedico: this.nombreMedico,
       documentoMedico: this.documentoMedico,
       tipoDocumentoMedico: this.tipoDocumentoMedico,
-      valor: this.valorOutput,
-      id: this.lastId
+      id: this.lastId,
     };
     this.procedimientos.push(newValueWithId);
+    this.items= this.procedimientos.length;
 
     // console.log(JSON.stringify(this.consultas, null, 2));
     this.sendProcedimientos.emit(this.procedimientos);
@@ -85,7 +85,8 @@ export class ProcedimientosComponent implements OnInit {
   onRemove(id:number): void {
     this.submitted = false;
     this.procedimientos = this.procedimientos.filter(procedimiento => procedimiento.id !== id);
-    console.log(JSON.stringify(this.procedimientos, null, 2));
+    this.items= this.procedimientos.length;
+    // console.log(JSON.stringify(this.procedimientos, null, 2));
   }
 
   searchMD(): void {

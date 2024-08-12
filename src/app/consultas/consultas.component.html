@@ -140,6 +140,7 @@
       </form>
       <br/>
       <div class="table-responsive text-nowrap">
+        <div class="text-right">Llevas {{items}} consultas</div>
         <table class="table">
           <thead class="table-light">
               <tr class="table-primary">
@@ -167,8 +168,8 @@
                 <td class="align-middle">{{consulta.dxPrincipal}}</td>
                 <td class="align-middle">{{consulta.dxRelacionado1}}</td>
                 <td class="align-middle">{{consulta.tipoDxConsulta}}</td>
-                <td class="align-middle">{{consulta.nombreMedico}}</td>
-                <td class="align-middle">{{consulta.valor}}</td>
+                <td class="align-middle">{{consulta.tipoDocumentoMedico}}<br/>{{consulta.documentoMedico}}</td>
+                <td class="align-middle">{{consulta.valor | currency}}</td>
                 <td class="align-middle text-center">
                   <button type="button" (click)="onRemove(consulta.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
                 </td>

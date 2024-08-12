@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CiudadesService } from './ciudades.service';
 import { DataGeneralService } from './data-general.service';
 import { ProcedimientosComponent } from './procedimientos/procedimientos.component';
+import { OtrosServiciosComponent } from './otros-servicios/otros-servicios.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ProcedimientosComponent } from './procedimientos/procedimientos.compone
     RipsFormComponent,
     ConsultasComponent,
     RipsJsonComponent,
-    ProcedimientosComponent
+    ProcedimientosComponent,
+    OtrosServiciosComponent
   ],
   imports: [
     BrowserModule,

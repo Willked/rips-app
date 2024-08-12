@@ -32,6 +32,8 @@ export class RipsJsonComponent implements OnInit {
   nombreClinica = "";
   arrayConsultas: any[] = [];
   arrayProcedimientos: any[] = [];
+  arrayOtrosServicios: any[] = [];
+  numeroFactura = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,14 +43,14 @@ export class RipsJsonComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      numFactura: ['OE880', [Validators.required]],
+      numFactura: ['', [Validators.required]],
       tipoNota: ['null', [Validators.required]],
       numNota: ['', []],
 
       tipoDocumento: ['CC', []],
-      numDocumento: ['1110450150', [Validators.required]],
+      numDocumento: ['', [Validators.required]],
       tipoUsuario: ['10', []],
-      fecNacimiento: ['1997-07-15', [Validators.required]],
+      fecNacimiento: ['', [Validators.required]],
       sexo: ['M', []],
       municipio: ['17380', []],
       zonaResidencia: ['02', []],
@@ -74,15 +76,39 @@ export class RipsJsonComponent implements OnInit {
 
     if (this.form.invalid) {
       console.log(this.form.invalid);
+      const firstInvalidControl: HTMLElement = Object.keys(this.form.controls)
+    .filter(key => this.form.controls[key].invalid)
+    .map(key => document.querySelector(`[formControlName="${key}"]`))
+    .find(control => !!control) as HTMLElement;
+
+    firstInvalidControl?.focus();
       return;
     }
 
     this.createJsonTransaccion();
     this.createUsersJson();
     this.createServices();
+
+    this.downloadRequestObject();
     console.log(JSON.stringify(this.json, null, 2));
     // console.log(JSON.stringify(this.arrayConsultas, null, 2));
 
+  }
+
+  convertToJsonFile(){
+    const jsonString = JSON.stringify(this.json);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    return blob
+  }
+
+  downloadRequestObject(){
+    const blob = this.convertToJsonFile();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `RIPS_${this.numeroFactura}.json`;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 
   onReset(): void {
@@ -91,6 +117,7 @@ export class RipsJsonComponent implements OnInit {
   }
 
   createJsonTransaccion(): void {
+    this.numeroFactura = this.form.value.numFactura;
     const newValue = {
         "numDocumentoIdObligado": this.datosClinica[0].nit,
         "numFactura": this.form.value.numFactura,
@@ -125,17 +152,23 @@ export class RipsJsonComponent implements OnInit {
 
   getProcedimientos(event:any): void {
     this.arrayProcedimientos = event;
+    console.log("llego aqui procedimientos");
+  }
+
+  getOtrosServicios(event:any): void {
+    this.arrayOtrosServicios = event;
+    console.log("llego otros servicios");
   }
 
   createServices(): void {
     const newValue = {
       "consultas": this.createConsultas(),
-      "medicamentos": [],
+      // "medicamentos": [],
       "procedimientos": this.createProcedimientos(),
-      "urgencias": [],
-      "hospitalizacion": [],
-      "recienNacidos": [],
-      "otrosServicios": []
+      // "urgencias": [],
+      // "hospitalizacion": [],
+      // "recienNacidos": [],
+      "otrosServicios": this.createOtrosServicios()
       }
     this.json.push("servicios", newValue);
   }
@@ -178,10 +211,10 @@ export class RipsJsonComponent implements OnInit {
     this.arrayProcedimientos.map((dato) => {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
-        "fechaInicioAtencion": dato.fecProcedimiento + " " + dato.horaProcedimiento,
+        "fechaInicioAtencion": dato.fecha + " " + dato.hora,
         "idMIPRES": null,
         "numAutorizacion": null,
-        "codProcedimiento": dato.codProcedimiento,
+        "codProcedimiento": dato.codigo,
         "viaIngresoServicioSalud": dato.viaIngreso,
         "modalidadGrupoServicioTecSal": "01",
         "grupoServicios": "01",
@@ -191,9 +224,37 @@ export class RipsJsonComponent implements OnInit {
         "numDocumentoIdentificacion": dato.documentoMedico,
         "codDiagnosticoPrincipal": dato.dxPrincipal,
         "codDiagnosticoRelacionado": dato.dxRelacionado1,
-        "codComplicacion": "",
+        "codComplicacion": "S025",
         "vrServicio": dato.valor,
-        "conceptoRecaudo": "04",
+        "conceptoRecaudo": "05",
+        "valorPagoModerador": 0,
+        "numFEVPagoModerador": null,
+        "consecutivo": i++,
+      }
+      newArray.push(newValue);
+    });
+    return newArray;
+
+  }
+
+  createOtrosServicios(): any[] {
+    let newArray:any[] = [];
+    let i = 1;
+    this.arrayOtrosServicios.map((dato) => {
+      const newValue = {
+        "codPrestador": this.datosClinica[0].codigo,
+        "numAutorizacion": null,
+        "idMIPRES": null,
+        "fechaSuministroTecnologia": dato.fecha + " " + dato.hora,
+        "tipoOS": "01",
+        "codTecnologiaSalud": dato.tecnologia,
+        "nomTecnologiaSalud": dato.nomTecnologia,
+        "cantidadOS": dato.cantidad,
+        "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
+        "numDocumentoIdentificacion": dato.documentoMedico,
+        "vrUnitOS": dato.valorunit,
+        "vrServicio": dato.valor,
+        "conceptoRecaudo": "05",
         "valorPagoModerador": 0,
         "numFEVPagoModerador": null,
         "consecutivo": i++,

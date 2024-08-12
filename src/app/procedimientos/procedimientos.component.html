@@ -9,13 +9,13 @@
             <div class="form-group">
               <input
                 type="date"
-                formControlName="fecProcedimiento"
+                formControlName="fecha"
                 class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f['fecProcedimiento'].errors }"
+                [ngClass]="{ 'is-invalid': submitted && f['fecha'].errors }"
                 value="{{ currentDate | date: 'dd/MM/yyyy' }}"
               />
-              <div *ngIf="submitted && f['fecProcedimiento'].errors" class="invalid-feedback">
-                <div *ngIf="f['fecProcedimiento'].errors['required']">* Campo requerido</div>
+              <div *ngIf="submitted && f['fecha'].errors" class="invalid-feedback">
+                <div *ngIf="f['fecha'].errors['required']">* Campo requerido</div>
               </div>
             </div>
           </div>
@@ -24,12 +24,12 @@
             <div class="form-group">
               <input
                 type="time"
-                formControlName="horaProcedimiento"
+                formControlName="hora"
                 class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f['horaProcedimiento'].errors }"
+                [ngClass]="{ 'is-invalid': submitted && f['hora'].errors }"
               />
-              <div *ngIf="submitted && f['horaProcedimiento'].errors" class="invalid-feedback">
-                <div *ngIf="f['horaProcedimiento'].errors['required']">* Campo requerido</div>
+              <div *ngIf="submitted && f['hora'].errors" class="invalid-feedback">
+                <div *ngIf="f['hora'].errors['required']">* Campo requerido</div>
               </div>
             </div>
           </div>
@@ -39,12 +39,12 @@
             <div class="form-group">
               <input
                 type="text"
-                formControlName="codProcedimiento"
+                formControlName="codigo"
                 class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f['codProcedimiento'].errors }"
+                [ngClass]="{ 'is-invalid': submitted && f['codigo'].errors }"
               />
-              <div *ngIf="submitted && f['codProcedimiento'].errors" class="invalid-feedback">
-                <div *ngIf="f['codProcedimiento'].errors['required']">* Campo requerido</div>
+              <div *ngIf="submitted && f['codigo'].errors" class="invalid-feedback">
+                <div *ngIf="f['codigo'].errors['required']">* Campo requerido</div>
               </div>
             </div>
           </div>
@@ -77,13 +77,13 @@
             <div class="form-group">
               <input
                 type="number"
-                formControlName="valorProcedimiento"
+                formControlName="valor"
                 class="form-control"
-                [value]="valorOutput"
-                [ngClass]="{ 'is-invalid': submitted && f['valorProcedimiento'].errors }"
+                [ngClass]="{ 'is-invalid': submitted && f['valor'].errors }"
               />
-              <div *ngIf="submitted && f['valorProcedimiento'].errors" class="invalid-feedback">
-                <div *ngIf="f['valorProcedimiento'].errors['required']">* Campo requerido</div>
+              <div *ngIf="submitted && f['valor'].errors" class="invalid-feedback">
+                <div *ngIf="f['valor'].errors['required']">* Campo requerido</div>
+                <div *ngIf="f['valor'].errors['min']">* Valor mayor a 0</div>
               </div>
             </div>
           </div>
@@ -121,6 +121,7 @@
       </form>
       <br/>
       <div class="table-responsive text-nowrap">
+        <div class="text-right">Llevas {{items}} procedimientos</div>
         <table class="table">
           <thead class="table-light">
               <tr class="table-primary">
@@ -141,15 +142,15 @@
               <td colspan="10" class="text-center">No hay registros!</td>
             </tr>
             <tr *ngFor="let proc of procedimientos" class="">
-                <td class="align-middle">{{proc.fecProcedimiento | date: 'dd/MM/yyyy'}}<br/>{{proc.horaProcedimiento}}</td>
-                <td class="align-middle">{{proc.codProcedimiento}}</td>
+                <td class="align-middle">{{proc.fecha | date: 'dd/MM/yyyy'}}<br/>{{proc.hora}}</td>
+                <td class="align-middle">{{proc.codigo}}</td>
                 <td class="align-middle">{{proc.tipoProcedimiento}}</td>
                 <td class="align-middle">{{proc.tipoDx}}</td>
                 <td class="align-middle">{{proc.dxPrincipal}}</td>
                 <td class="align-middle">{{proc.dxRelacionado1}}</td>
                 <td class="align-middle">{{proc.tipoDxConsulta}}</td>
-                <td class="align-middle">{{proc.nombreMedico}}</td>
-                <td class="align-middle">{{proc.valor}}</td>
+                <td class="align-middle">{{proc.tipoDocumentoMedico}}<br/>{{proc.documentoMedico}}</td>
+                <td class="align-middle">{{proc.valor | currency}}</td>
                 <td class="align-middle text-center">
                   <button type="button" (click)="onRemove(proc.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
                 </td>

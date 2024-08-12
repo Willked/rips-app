@@ -35,6 +35,7 @@ export class ConsultasComponent implements OnInit {
   documentoMedico = '';
   tipoDocumentoMedico = '';
   valorOutput = 0;
+  items = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -84,6 +85,7 @@ export class ConsultasComponent implements OnInit {
       id: this.lastId
     };
     this.consultas.push(newValueWithId);
+    this.items= this.consultas.length;
 
     // console.log(JSON.stringify(this.consultas, null, 2));
     this.sendConsultas.emit(this.consultas);
@@ -93,6 +95,7 @@ export class ConsultasComponent implements OnInit {
     this.submitted = false;
     this.consultas = this.consultas.filter(consulta => consulta.id !== id);
     console.log(JSON.stringify(this.consultas, null, 2));
+    this.items= this.consultas.length;
     // this.sendConsultas.emit(this.json);
   }
 

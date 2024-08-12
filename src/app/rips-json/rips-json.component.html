@@ -187,8 +187,12 @@
     </div>
     <app-consultas (sendConsultas)="getConsultas($event)"></app-consultas>
     <app-procedimientos (sendProcedimientos)="getProcedimientos($event)"></app-procedimientos>
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Register</button>
+    <app-otros-servicios (sendOtrosServicios)="getOtrosServicios($event)"></app-otros-servicios>
+    <div class="form-group col-md-2 mb-3 mt-4">
+      <button type="submit" class="btn btn-outline-primary">Descargar RIPS</button>
+    </div>
+    <!-- <div class="form-group">
+      <button type="submit" class="btn btn-primary">Descargar RIPS</button>
       <button
         type="button"
         (click)="onReset()"
@@ -196,7 +200,7 @@
       >
         Reset
       </button>
-    </div>
+    </div> -->
 
   </form>
 </div>
