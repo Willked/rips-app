@@ -1,0 +1,105 @@
+{
+  "clinica":[
+    {
+      "nombre": "ODONTOMEDICAS SAS",
+      "nit": "901482537",
+      "codigo": "173800302601"
+    }
+  ],
+  "servicios": [
+    {
+      "codigo": "211",
+      "nombre": "CIRUGIA ORAL",
+      "medico":{
+        "nombre": "CIRUJANO ORAL",
+        "tipoDocumento": "CE",
+        "documento": "426714"
+      }
+    },
+    {
+      "codigo": "311",
+      "nombre": "ENDODONCIA",
+      "medico":{
+        "nombre": "MEDICO ENDODONCISTA",
+        "tipoDocumento": "CC",
+        "documento": "53176643"
+      }
+    },
+    {
+      "codigo": "334",
+      "nombre": "ODONTOLOGIA GENERAL",
+      "medico":{
+        "nombre": "ODONTOLOGO GENERAL",
+        "tipoDocumento": "CC",
+        "documento": "1054568364"
+      }
+    },
+    {
+      "codigo": "347",
+      "nombre": "REHABILITACION ORAL",
+      "medico":{
+        "nombre": "REHABILITADOR ORAL",
+        "tipoDocumento": "CC",
+        "documento": "19394852"
+      }
+    },
+    {
+      "codigo": "396",
+      "nombre": "ODONTOPEDIATRIA",
+      "medico":{
+        "nombre": "MEDICO ODONTOPEDIATRA",
+        "tipoDocumento": "PT",
+        "documento": "4954293"
+      }
+    },
+    {
+      "codigo": "748",
+      "nombre": "RADIOLOGIA ODONTOLOGICA",
+      "medico":{
+        "nombre": "MEDICO RADIOLOGO",
+        "tipoDocumento": "CC",
+        "documento": "75097961"
+      }
+    }
+  ],
+  "consultas":[
+    {
+      "codigo": "890703",
+      "nombre": "CONSULTA URGENCIA POR ODONTOLOGIA GENERAL - 890703",
+      "precio": "36800"
+    },
+    {
+      "codigo": "890303",
+      "nombre": "CONSULTA CONTROL POR ODONTOLOGIA GENERAL - 890303",
+      "precio": "29300"
+    }
+  ],
+  "diagnosticos":[
+    {
+      "codigo": "",
+      "nombre": "Seleccione una opción"
+    },
+    {
+      "codigo": "K040",
+      "nombre": "Pulpitis"
+    },
+    {
+      "codigo": "S025",
+      "nombre": "Fractura de dientes"
+    }
+  ],
+  "tecnologia":[
+    {
+      "codigo": "CA1",
+      "nombre": "CORONA ACRILICA"
+    },
+    {
+      "codigo": "CP",
+      "nombre": "CORONA PORCELANA VM13"
+    },
+    {
+      "codigo": "NM1",
+      "nombre": "NUCLEOS METALICOS"
+    }
+  ]
+}

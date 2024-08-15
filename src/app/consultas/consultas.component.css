@@ -244,3 +244,10 @@ select:focus,
   background-position: right calc(.375em + .1875rem) center;
   background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }
+
+.invalid-select {
+  width: 100%;
+  margin-top: .25rem;
+  font-size: .875em;
+  color: #dc3545;
+}

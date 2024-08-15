@@ -1,0 +1,137 @@
+<div class="row mb-3">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h2 class="card-title">Otros Servicios</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Fecha</label>
+            <div class="form-group">
+              <input
+                type="date"
+                formControlName="fecha"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['fecha'].errors }"
+                value="{{ currentDate | date: 'dd/MM/yyyy' }}"
+              />
+              <div *ngIf="submitted && f['fecha'].errors" class="invalid-feedback">
+                <div *ngIf="f['fecha'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Hora</label>
+            <div class="form-group">
+              <input
+                type="time"
+                formControlName="hora"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['hora'].errors }"
+              />
+              <div *ngIf="submitted && f['hora'].errors" class="invalid-feedback">
+                <div *ngIf="f['hora'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-7 mb-3"></div>
+          <div class="form-group col-md-4 mb-3">
+            <label class="form-label">Tecnología</label>
+            <div class="form-group">
+              <select
+                  formControlName="tecnologia"
+                  class="form-control"
+                >
+                <option *ngFor="let tecno of tecnologia" [value]="tecno.codigo">
+                  {{ tecno.codigo }} - {{ tecno.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Tipo de consulta</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoConsulta"
+                  class="form-control"
+                >
+                <option *ngFor="let servicio of serviciosClinica" [value]="servicio.codigo">
+                  {{ servicio.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Cantidad</label>
+            <div class="form-group">
+              <input
+                type="number"
+                formControlName="cantidad"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['cantidad'].errors }"
+              />
+              <div *ngIf="submitted && f['cantidad'].errors" class="invalid-feedback">
+                <div *ngIf="f['cantidad'].errors['required']">* Campo requerido</div>
+              </div>
+              <div *ngIf="submitted && f['cantidad'].errors" class="invalid-feedback">
+                <div *ngIf="f['cantidad'].errors['min']">* Cantidad mayor a 0</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Valor unitario</label>
+            <div class="form-group">
+              <input
+                type="number"
+                formControlName="valorunit"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['valorunit'].errors }"
+              />
+              <div *ngIf="submitted && f['valorunit'].errors" class="invalid-feedback">
+                <div *ngIf="f['valorunit'].errors['required']">* Campo requerido</div>
+                <div *ngIf="f['valorunit'].errors['min']">* Valor mayor a 0</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-10 mb-3"></div>
+          <div class="form-group col-md-2 mb-3 mt-4">
+            <button type="submit" class="btn btn-outline-primary">Agregar item</button>
+          </div>
+        </div>
+      </form>
+      <br/>
+      <div class="table-responsive text-nowrap">
+        <div class="text-right">Llevas {{items}} otros servicios</div>
+        <table class="table">
+          <thead class="table-light">
+              <tr class="table-primary">
+                  <th scope="col">Fecha<br/>Hora</th>
+                  <th scope="col">Tecnología</th>
+                  <th scope="col">Profesional</th>
+                  <th scope="col">Valor<br/>Unitario</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Valor<br/>Total</th>
+                  <th>acción</th>
+              </tr>
+          </thead>
+          <tbody class="table-border-bottom-0 table-color">
+            <tr *ngIf="otrosArray.length === 0">
+              <td colspan="10" class="text-center">No hay registros!</td>
+            </tr>
+            <tr *ngFor="let proc of otrosArray" class="">
+                <td class="align-middle">{{proc.fecha | date: 'dd/MM/yyyy'}}<br/>{{proc.hora}}</td>
+                <td class="align-middle">{{proc.tecnologia}}<br/>{{proc.nomTecnologia}}</td>
+                <td class="align-middle">{{proc.tipoDocumentoMedico}}<br/>{{proc.documentoMedico}}</td>
+                <td class="align-middle">{{proc.valorunit | currency}}</td>
+                <td class="align-middle">{{proc.cantidad}}</td>
+                <td class="align-middle">{{proc.valor | currency}}</td>
+                <td class="align-middle text-center">
+                  <button type="button" (click)="onRemove(proc.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br/>
+    </div>
+  </div>
+</div>

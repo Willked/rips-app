@@ -1,0 +1,182 @@
+<div class="row mb-3">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h2 class="card-title">Datos de la Consulta</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Fecha</label>
+            <div class="form-group">
+              <input
+                type="date"
+                formControlName="fecConsulta"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['fecConsulta'].errors }"
+                value="{{ currentDate | date: 'dd/MM/yyyy' }}"
+              />
+              <div *ngIf="submitted && f['fecConsulta'].errors" class="invalid-feedback">
+                <div *ngIf="f['fecConsulta'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Hora</label>
+            <div class="form-group">
+              <input
+                type="time"
+                formControlName="horaConsulta"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['horaConsulta'].errors }"
+              />
+              <div *ngIf="submitted && f['horaConsulta'].errors" class="invalid-feedback">
+                <div *ngIf="f['horaConsulta'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-7 mb-3"></div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Consulta</label>
+            <div class="form-group">
+              <select
+                  formControlName="codConsulta"
+                  class="form-control"
+                  (change)="searchValue($event)"
+                >
+                <option value="">Seleccione una opción</option>
+                <option *ngFor="let consulta of consultasClinica" [value]="consulta.codigo">
+                  {{ consulta.nombre}}
+                </option>
+                </select>
+              <div *ngIf="submitted && f['codConsulta'].errors" class="invalid-select">
+                <div *ngIf="f['codConsulta'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Tipo de consulta</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoConsulta"
+                  class="form-control"
+                >
+                <option *ngFor="let servicio of serviciosClinica" [value]="servicio.codigo">
+                  {{ servicio.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Valor</label>
+            <div class="form-group">
+              <input
+                type="number"
+                formControlName="valorConsulta"
+                class="form-control"
+                [value]="valorOutput"
+                [ngClass]="{ 'is-invalid': submitted && f['valorConsulta'].errors }"
+              />
+              <div *ngIf="submitted && f['valorConsulta'].errors" class="invalid-feedback">
+                <div *ngIf="f['valorConsulta'].errors['required']">* Campo requerido</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Finalidad</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoDx"
+                  class="form-control"
+                >
+                <option value="15">Diagnóstico</option>
+                <option value="16">Tratamiento</option>
+                <option value="17">Rehabilitación</option>
+                <option value="44">Otra</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Dx Principal</label>
+            <div class="form-group">
+              <select
+                  formControlName="dxPrincipal"
+                  class="form-control"
+                >
+                <option *ngFor="let dx of dxClinica" [value]="dx.codigo">
+                  {{ dx.codigo }} - {{ dx.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3">
+            <label class="form-label">Dx Relacionado</label>
+            <div class="form-group">
+              <select
+                  formControlName="dxRelacionado1"
+                  class="form-control"
+                >
+                <option *ngFor="let dx of dxClinica" [value]="dx.codigo">
+                  {{ dx.codigo }} - {{ dx.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-4 mb-3">
+            <label class="form-label">Tipo de diagnóstico</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoDxConsulta"
+                  class="form-control"
+                >
+                  <option value="1">Impresión diagnóstica</option>
+                  <option value="2">Confirmado nuevo</option>
+                  <option value="3">Confirmado repetido</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group col-md-2 mb-3 mt-4">
+            <button type="submit" class="btn btn-outline-primary">Agregar item</button>
+          </div>
+        </div>
+      </form>
+      <br/>
+      <div class="table-responsive text-nowrap">
+        <div class="text-right">Llevas {{items}} consultas</div>
+        <table class="table">
+          <thead class="table-light">
+              <tr class="table-primary">
+                  <th scope="col">Fecha<br/>Hora</th>
+                  <th scope="col">Consulta</th>
+                  <th scope="col">Tipo<br/>Consulta</th>
+                  <th scope="col">Finalidad</th>
+                  <th scope="col">Dx prin</th>
+                  <th scope="col">Dx Rel</th>
+                  <th scope="col">Tipo Dx</th>
+                  <th scope="col">profesional</th>
+                  <th scope="col">Valor</th>
+                  <th>acción</th>
+              </tr>
+          </thead>
+          <tbody class="table-border-bottom-0 table-color">
+            <tr *ngIf="consultas.length === 0">
+              <td colspan="10" class="text-center">No hay registros!</td>
+            </tr>
+            <tr *ngFor="let consulta of consultas" class="">
+                <td class="align-middle">{{consulta.fecConsulta | date: 'dd/MM/yyyy'}}<br/>{{consulta.horaConsulta}}</td>
+                <td class="align-middle">{{consulta.codConsulta}}</td>
+                <td class="align-middle">{{consulta.tipoConsulta}}</td>
+                <td class="align-middle">{{consulta.tipoDx}}</td>
+                <td class="align-middle">{{consulta.dxPrincipal}}</td>
+                <td class="align-middle">{{consulta.dxRelacionado1}}</td>
+                <td class="align-middle">{{consulta.tipoDxConsulta}}</td>
+                <td class="align-middle">{{consulta.tipoDocumentoMedico}}<br/>{{consulta.documentoMedico}}</td>
+                <td class="align-middle">{{consulta.valor | currency}}</td>
+                <td class="align-middle text-center">
+                  <button type="button" (click)="onRemove(consulta.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
+                </td>
+              </tr>
+        </table>
+      </div>
+      <br/>
+    </div>
+  </div>
+</div>
