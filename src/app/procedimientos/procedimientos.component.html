@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="form-group col-md-7 mb-3"></div>
-          <div class="form-group col-md-5 mb-3">
+          <div class="form-group col-md-4 mb-3">
             <label class="form-label">Procedimiento</label>
             <div class="form-group">
               <input
@@ -46,6 +46,33 @@
               <div *ngIf="submitted && f['codigo'].errors" class="invalid-feedback">
                 <div *ngIf="f['codigo'].errors['required']">* Campo requerido</div>
               </div>
+            </div>
+          </div>
+          <div class="form-group col-md-5 mb-3">
+            <label class="form-label">Tipo de procedimiento</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoProcedimiento"
+                  class="form-control"
+                >
+                <option *ngFor="let servicio of serviciosClinica" [value]="servicio.codigo">
+                  {{ servicio.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-md-3 mb-3">
+            <label class="form-label">Finalidad</label>
+            <div class="form-group">
+              <select
+                  formControlName="tipoDx"
+                  class="form-control"
+                >
+                <option value="15">Diagnóstico</option>
+                <option value="16">Tratamiento</option>
+                <option value="17">Rehabilitación</option>
+                <option value="44">Otra</option>
+              </select>
             </div>
           </div>
           <div class="form-group col-md-5 mb-3">
@@ -87,33 +114,6 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-5 mb-3">
-            <label class="form-label">Tipo de procedimiento</label>
-            <div class="form-group">
-              <select
-                  formControlName="tipoProcedimiento"
-                  class="form-control"
-                >
-                <option *ngFor="let servicio of serviciosClinica" [value]="servicio.codigo">
-                  {{ servicio.nombre}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group col-md-2 mb-3">
-            <label class="form-label">Finalidad</label>
-            <div class="form-group">
-              <select
-                  formControlName="tipoDx"
-                  class="form-control"
-                >
-                <option value="15">Diagnóstico</option>
-                <option value="16">Tratamiento</option>
-                <option value="17">Rehabilitación</option>
-                <option value="44">Otra</option>
-              </select>
-            </div>
-          </div>
           <div class="form-group col-md-2 mb-3 mt-4">
             <button type="submit" class="btn btn-outline-primary">Agregar item</button>
           </div>
@@ -126,12 +126,12 @@
           <thead class="table-light">
               <tr class="table-primary">
                   <th scope="col">Fecha<br/>Hora</th>
-                  <th scope="col">Consulta</th>
-                  <th scope="col">Tipo<br/>Consulta</th>
+                  <th scope="col">Procedimiento</th>
+                  <th scope="col">Tipo<br/>Procedimiento</th>
                   <th scope="col">Finalidad</th>
                   <th scope="col">Dx prin</th>
                   <th scope="col">Dx Rel</th>
-                  <th scope="col">Tipo Dx</th>
+                  <th scope="col">Via Ingreso</th>
                   <th scope="col">profesional</th>
                   <th scope="col">Valor</th>
                   <th>acción</th>
@@ -148,7 +148,7 @@
                 <td class="align-middle">{{proc.tipoDx}}</td>
                 <td class="align-middle">{{proc.dxPrincipal}}</td>
                 <td class="align-middle">{{proc.dxRelacionado1}}</td>
-                <td class="align-middle">{{proc.tipoDxConsulta}}</td>
+                <td class="align-middle">{{proc.viaIngreso}}</td>
                 <td class="align-middle">{{proc.tipoDocumentoMedico}}<br/>{{proc.documentoMedico}}</td>
                 <td class="align-middle">{{proc.valor | currency}}</td>
                 <td class="align-middle text-center">
