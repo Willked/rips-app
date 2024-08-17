@@ -9,6 +9,8 @@ import { DataGeneralService } from '../data-general.service';
 })
 export class ProcedimientosComponent implements OnInit {
   @Output() sendProcedimientos = new EventEmitter<any[]>();
+  @Output() sendSubtotal = new EventEmitter<any>();
+
   form: FormGroup = new FormGroup({
     fecha: new FormGroup(""),
     hora: new FormGroup(""),
@@ -28,10 +30,10 @@ export class ProcedimientosComponent implements OnInit {
   serviciosClinica: any[] = [];
   procedimientosClinica: any[] = [];
   dxClinica: any[] = [];
-  nombreMedico = '';
   documentoMedico = '';
   tipoDocumentoMedico = '';
   items = 0;
+  totalValue = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,8 +41,6 @@ export class ProcedimientosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("procedimientosComponent@ngOnInit");
-
     this.form = this.formBuilder.group({
       fecha: [this.currentDate, [Validators.required]],
       hora: [this.currentTime, [Validators.required]],
@@ -68,34 +68,34 @@ export class ProcedimientosComponent implements OnInit {
 
     this.searchMD();
     this.lastId++
+    this.totalValue += Number(this.form.value.valor);
     const newValueWithId = {
       ...this.form.value,
-      nombreMedico: this.nombreMedico,
       documentoMedico: this.documentoMedico,
       tipoDocumentoMedico: this.tipoDocumentoMedico,
-      id: this.lastId,
+      id: this.lastId
     };
     this.procedimientos.push(newValueWithId);
     this.items= this.procedimientos.length;
-
-    // console.log(JSON.stringify(this.consultas, null, 2));
     this.sendProcedimientos.emit(this.procedimientos);
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   onRemove(id:number): void {
     this.submitted = false;
-    this.procedimientos = this.procedimientos.filter(procedimiento => procedimiento.id !== id);
+    let tmp = this.procedimientos.filter(procedimiento => procedimiento.id === id)
+    this.procedimientos = this.procedimientos.filter(procedimiento => procedimiento.id !== id)
     this.items= this.procedimientos.length;
-    // console.log(JSON.stringify(this.procedimientos, null, 2));
+    this.sendProcedimientos.emit(this.procedimientos);
+    this.totalValue -= Number(tmp[0].valor);
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   searchMD(): void {
-    this.nombreMedico = "";
     this.documentoMedico = "";
     this.tipoDocumentoMedico = "";
 
     const val = this.serviciosClinica.filter(servicio => servicio.codigo === this.form.value.tipoProcedimiento);
-    this.nombreMedico = val[0].medico.nombre;
     this.documentoMedico = val[0].medico.documento;
     this.tipoDocumentoMedico = val[0].medico.tipoDocumento;
   }

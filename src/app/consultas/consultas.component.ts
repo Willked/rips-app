@@ -10,6 +10,8 @@ import Validation from '../utils/validation';
 })
 export class ConsultasComponent implements OnInit {
   @Output() sendConsultas = new EventEmitter<any[]>();
+  @Output() sendSubtotal = new EventEmitter<any>();
+
   form: FormGroup = new FormGroup({
     fecConsulta: new FormControl(''),
     horaConsulta: new FormControl(''),
@@ -36,6 +38,7 @@ export class ConsultasComponent implements OnInit {
   tipoDocumentoMedico = '';
   valorOutput = 0;
   items = 0;
+  totalValue = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,8 +46,6 @@ export class ConsultasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("consultasComponent@ngOnInit");
-
     this.form = this.formBuilder.group({
       fecConsulta: [this.currentDate, [Validators.required]],
       horaConsulta: [this.currentTime, [Validators.required]],
@@ -85,18 +86,18 @@ export class ConsultasComponent implements OnInit {
       id: this.lastId
     };
     this.consultas.push(newValueWithId);
-    this.items= this.consultas.length;
-
-    // console.log(JSON.stringify(this.consultas, null, 2));
+    this.items = this.consultas.length;
+    this.totalValue += Number(this.valorOutput);
     this.sendConsultas.emit(this.consultas);
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   onRemove(id:number): void {
     this.submitted = false;
     this.consultas = this.consultas.filter(consulta => consulta.id !== id);
-    console.log(JSON.stringify(this.consultas, null, 2));
     this.items= this.consultas.length;
-    // this.sendConsultas.emit(this.json);
+    this.totalValue -= Number(this.valorOutput);
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   searchMD(): void {
@@ -121,7 +122,6 @@ export class ConsultasComponent implements OnInit {
     }
     const val = this.consultasClinica.filter(consulta => consulta.codigo === selectedValue);
     this.valorOutput = val[0].precio;
-    // this.form.value.valorConsulta = val[0].precio;
   }
 
 }

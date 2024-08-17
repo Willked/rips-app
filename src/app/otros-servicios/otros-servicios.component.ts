@@ -9,6 +9,8 @@ import { DataGeneralService } from '../data-general.service';
 })
 export class OtrosServiciosComponent implements OnInit {
   @Output() sendOtrosServicios = new EventEmitter<any[]>();
+  @Output() sendSubtotal = new EventEmitter<any>();
+
   form: FormGroup = new FormGroup({
     fecha: new FormGroup(""),
     hora: new FormGroup(""),
@@ -27,6 +29,7 @@ export class OtrosServiciosComponent implements OnInit {
   documentoMedico = '';
   tipoDocumentoMedico = '';
   items = 0;
+  totalValue = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,8 +37,6 @@ export class OtrosServiciosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("otrosServiciosComponent@ngOnInit");
-
     this.form = this.formBuilder.group({
       fecha: [this.currentDate, [Validators.required]],
       hora: [this.currentTime, [Validators.required]],
@@ -63,6 +64,7 @@ export class OtrosServiciosComponent implements OnInit {
     let valorOutput = this.form.value.valorunit*this.form.value.cantidad;
 
     this.searchMD();
+    this.totalValue += Number(valorOutput);
     let newService = {
       id: this.lastId,
       fecha: this.form.value.fecha,
@@ -78,14 +80,16 @@ export class OtrosServiciosComponent implements OnInit {
     this.items= this.otrosArray.length;
     this.otrosArray.push(newService);
     this.sendOtrosServicios.emit(this.otrosArray);
-    this.submitted = false;
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   onRemove(id:number): void {
     this.submitted = false;
+    let tmp = this.otrosArray.filter(servicio => servicio.id === id)
     this.otrosArray = this.otrosArray.filter(servicio => servicio.id !== id);
     this.items= this.otrosArray.length;
-    // console.log(JSON.stringify(this.otrosArray, null, 2));
+    this.totalValue -= Number(tmp[0].valor);
+    this.sendSubtotal.emit(this.totalValue);
   }
 
   searchTech(id:string): void {

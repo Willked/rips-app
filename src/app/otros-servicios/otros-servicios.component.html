@@ -100,7 +100,14 @@
       </form>
       <br/>
       <div class="table-responsive text-nowrap">
-        <div class="text-right">Llevas {{items}} otros servicios</div>
+        <div class="row align-items-start">
+          <div class="col">
+            <h3>Llevas <b>{{items}}</b> servicio(s).</h3>
+          </div>
+          <div class="col text-end">
+            <h3>Valor total: <b>{{ totalValue | currency}}</b></h3>
+          </div>
+        </div>
         <table class="table">
           <thead class="table-light">
               <tr class="table-primary">

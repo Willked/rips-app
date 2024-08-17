@@ -34,6 +34,10 @@ export class RipsJsonComponent implements OnInit {
   arrayProcedimientos: any[] = [];
   arrayOtrosServicios: any[] = [];
   numeroFactura = "";
+  tConsultas = 0;
+  tProcedimientos = 0;
+  tServicios = 0;
+  totalFactura = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,7 +79,6 @@ export class RipsJsonComponent implements OnInit {
     this.submitted = true;
 
     if (this.form.invalid) {
-      console.log(this.form.invalid);
       const firstInvalidControl: HTMLElement = Object.keys(this.form.controls)
     .filter(key => this.form.controls[key].invalid)
     .map(key => document.querySelector(`[formControlName="${key}"]`))
@@ -90,13 +93,10 @@ export class RipsJsonComponent implements OnInit {
     this.createServices();
 
     this.downloadRequestObject();
-    console.log(JSON.stringify(this.json, null, 2));
-    // console.log(JSON.stringify(this.arrayConsultas, null, 2));
-
   }
 
   convertToJsonFile(){
-    const jsonString = JSON.stringify(this.json);
+    const jsonString = JSON.stringify(this.json, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
     return blob
   }
@@ -150,14 +150,31 @@ export class RipsJsonComponent implements OnInit {
     this.arrayConsultas = event;
   }
 
+  getSubtotalConsultas(event:any): void {
+    this.tConsultas = Number(event);
+    this.sumar();
+  }
+
   getProcedimientos(event:any): void {
     this.arrayProcedimientos = event;
-    console.log("llego aqui procedimientos");
+  }
+
+  getSubtotalProcedimientos(event:any): void {
+    this.tProcedimientos = Number(event);
+    this.sumar();
   }
 
   getOtrosServicios(event:any): void {
     this.arrayOtrosServicios = event;
-    console.log("llego otros servicios");
+  }
+
+  getSubtotalServicios(event:any): void {
+    this.tServicios = Number(event);
+    this.sumar();
+  }
+
+  sumar(): void {
+    this.totalFactura = this.tConsultas + this.tProcedimientos + this.tServicios;
   }
 
   createServices(): void {
