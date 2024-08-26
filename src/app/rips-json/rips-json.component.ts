@@ -229,8 +229,8 @@ export class RipsJsonComponent implements OnInit {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
         "fechaInicioAtencion": dato.fecha + " " + dato.hora,
-        "idMIPRES": null,
-        "numAutorizacion": null,
+        "idMIPRES": "null",
+        "numAutorizacion": "null",
         "codProcedimiento": dato.codigo,
         "viaIngresoServicioSalud": dato.viaIngreso,
         "modalidadGrupoServicioTecSal": "01",
@@ -242,10 +242,10 @@ export class RipsJsonComponent implements OnInit {
         "codDiagnosticoPrincipal": dato.dxPrincipal,
         "codDiagnosticoRelacionado": dato.dxRelacionado1,
         "codComplicacion": "S025",
-        "vrServicio": dato.valor,
+        "vrServicio": dato.valor.toString(),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": 0,
-        "numFEVPagoModerador": null,
+        "valorPagoModerador": "0",
+        "numFEVPagoModerador": "null",
         "consecutivo": i++,
       }
       newArray.push(newValue);

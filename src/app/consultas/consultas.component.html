@@ -158,7 +158,7 @@
         <div class="text-right"></div>
         <table class="table">
           <thead class="table-light">
-              <tr class="table-primary">
+              <tr class="table-primary text-center">
                   <th scope="col">Fecha<br/>Hora</th>
                   <th scope="col">Consulta</th>
                   <th scope="col">Tipo<br/>Consulta</th>
@@ -175,7 +175,7 @@
             <tr *ngIf="consultas.length === 0">
               <td colspan="10" class="text-center">No hay registros!</td>
             </tr>
-            <tr *ngFor="let consulta of consultas" class="">
+            <tr *ngFor="let consulta of consultas" class="text-center">
                 <td class="align-middle">{{consulta.fecConsulta | date: 'dd/MM/yyyy'}}<br/>{{consulta.horaConsulta}}</td>
                 <td class="align-middle">{{consulta.codConsulta}}</td>
                 <td class="align-middle">{{consulta.tipoConsulta}}</td>
@@ -185,9 +185,10 @@
                 <td class="align-middle">{{consulta.tipoDxConsulta}}</td>
                 <td class="align-middle">{{consulta.tipoDocumentoMedico}}<br/>{{consulta.documentoMedico}}</td>
                 <td class="align-middle">{{consulta.valorConsulta | currency}}</td>
-                <td class="align-middle text-center">
-                  <button type="button" (click)="openModal(myModalContent, consulta.id)" class="btn btn-success"><b><i class="bi bi-pencil"></i></b></button>
-                  <button type="button" (click)="onRemove(consulta.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
+                <td class="align-middle">
+                  <button type="button" (click)="openModal(myModalContent, consulta.id)" class="btn btn-success" data-bs-toggle="tooltip" title="Editar"><b><i class="bi bi-pencil"></i></b></button>
+                  &nbsp;
+                  <button type="button" (click)="onRemove(consulta.id)" class="btn btn-danger" data-bs-toggle="tooltip" title="Cancelar"><b><i class="bi bi-trash3"></i></b></button>
                 </td>
               </tr>
         </table>

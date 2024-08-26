@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataGeneralService } from '../data-general.service';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-procedimientos',
@@ -15,12 +16,22 @@ export class ProcedimientosComponent implements OnInit {
     fecha: new FormGroup(""),
     hora: new FormGroup(""),
     codigo: new FormGroup(""),
-    viaIngreso: new FormGroup(""),
     tipoProcedimiento: new FormGroup(""),
     tipoDx: new FormGroup(""),
+    viaIngreso: new FormGroup(""),
     valor: new FormGroup("")
-
   });
+
+  formModal: FormGroup = new FormGroup({
+    fechaModal: new FormGroup(""),
+    horaModal: new FormGroup(""),
+    codigoModal: new FormGroup(""),
+    tipoModal: new FormGroup(""),
+    finalidadModal: new FormGroup(""),
+    viaModal: new FormGroup(""),
+    valorModal: new FormGroup("")
+  });
+
   currentDate = new Date().toISOString().substring(0, 10);
   currentTime = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false });
   procedimientos:any[] = [];
@@ -37,7 +48,8 @@ export class ProcedimientosComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private dataGeneralService: DataGeneralService
+    private dataGeneralService: DataGeneralService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -45,9 +57,9 @@ export class ProcedimientosComponent implements OnInit {
       fecha: [this.currentDate, [Validators.required]],
       hora: [this.currentTime, [Validators.required]],
       codigo: ['', [Validators.required]],
-      viaIngreso: ['02', [Validators.required]],
       tipoProcedimiento: ['334', []],
       tipoDx: ['15', []],
+      viaIngreso: ['02', [Validators.required]],
       dxPrincipal: ['S025', [Validators.required]],
       dxRelacionado1: ['K040', [Validators.required]],
       valor: ['0', [Validators.required, Validators.min(1)]]
@@ -57,16 +69,30 @@ export class ProcedimientosComponent implements OnInit {
       this.dxClinica = data.diagnosticos;
     });
   }
-  get f(): { [key: string]: AbstractControl } {
-    return this.form.controls;
+
+  get f(): { [key: string]: AbstractControl } { return this.form.controls; }
+  get g(): { [key: string]: AbstractControl } { return this.formModal.controls; }
+
+    // Busca el médico del procedimiento
+  searchMD(cod:number): void {
+    this.documentoMedico = "";
+    this.tipoDocumentoMedico = "";
+
+    const val = this.serviciosClinica.filter(servicio => servicio.codigo === cod);
+    this.documentoMedico = val[0].medico.documento;
+    this.tipoDocumentoMedico = val[0].medico.tipoDocumento;
   }
+
+   // Busca un elemento del arreglo de procedimientos por el id
+   searchArray(id:number): any { return this.procedimientos.filter(procedimiento => procedimiento.id === id) }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
       return;
     }
 
-    this.searchMD();
+    this.searchMD(this.form.value.tipoProcedimiento);
     this.lastId++
     this.totalValue += Number(this.form.value.valor);
     const newValueWithId = {
@@ -81,9 +107,10 @@ export class ProcedimientosComponent implements OnInit {
     this.sendSubtotal.emit(this.totalValue);
   }
 
+  // Elimina un procedimiento del arreglo
   onRemove(id:number): void {
     this.submitted = false;
-    let tmp = this.procedimientos.filter(procedimiento => procedimiento.id === id)
+    let tmp = this.searchArray(id);
     this.procedimientos = this.procedimientos.filter(procedimiento => procedimiento.id !== id)
     this.items= this.procedimientos.length;
     this.sendProcedimientos.emit(this.procedimientos);
@@ -91,13 +118,61 @@ export class ProcedimientosComponent implements OnInit {
     this.sendSubtotal.emit(this.totalValue);
   }
 
-  searchMD(): void {
-    this.documentoMedico = "";
-    this.tipoDocumentoMedico = "";
+  // Abre el modal de edición del procedimiento
+  openModal(content:any, id:number): void {
+    this.submitted = false;
 
-    const val = this.serviciosClinica.filter(servicio => servicio.codigo === this.form.value.tipoProcedimiento);
-    this.documentoMedico = val[0].medico.documento;
-    this.tipoDocumentoMedico = val[0].medico.tipoDocumento;
+    this.modalService.open(content);
+
+    let val = this.searchArray(id);
+
+    this.formModal = this.formBuilder.group({
+      fechaModal: [val[0].fecha, [Validators.required]],
+      horaModal: [val[0].hora, [Validators.required]],
+      codigoModal: [val[0].codigo, [Validators.required]],
+      tipoModal: [val[0].tipoProcedimiento, []],
+      finalidadModal: [val[0].tipoDx, []],
+      viaModal: [val[0].viaIngreso, []],
+      valorModal: [val[0].valor, [Validators.required, Validators.min(1)]],
+      dxPpal: ['S025', []],
+      dx1Modal: ['K040', []],
+      id: [id]
+    });
+  }
+
+  onEdit(): void {
+    this.submitted = true;
+
+    if (this.formModal.invalid) {
+      return;
+    }
+
+    this.searchMD(this.formModal.value.tipoModal);
+
+    this.procedimientos = this.procedimientos.map(proc => {
+      if (proc.id === this.formModal.value.id) {
+        this.totalValue -= Number(proc.valor);
+        this.totalValue += Number(this.formModal.value.valorModal);
+        return {
+          ...proc,
+          fecha: this.formModal.value.fechaModal,
+          hora: this.formModal.value.horaModal,
+          codigo: this.formModal.value.codigoModal,
+          tipoProcedimiento: this.formModal.value.tipoModal,
+          tipoDx: this.formModal.value.finalidadModal,
+          viaIngreso: this.formModal.value.viaModal,
+          valor: this.formModal.value.valorModal,
+          documentoMedico: this.documentoMedico,
+          tipoDocumentoMedico: this.tipoDocumentoMedico
+        }
+      }
+      return proc;
+    });
+
+    this.sendProcedimientos.emit(this.procedimientos);
+    this.sendSubtotal.emit(this.totalValue);
+
+    this.modalService.dismissAll();
   }
 
 }
