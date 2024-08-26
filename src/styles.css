@@ -281,3 +281,58 @@ select:focus,
   color: #dc3545;
 }
 
+.modal {
+  --bs-modal-width: 60rem;
+}
+
+.modal-dialog {
+  pointer-events: none;
+}
+
+.modal .modal-dialog {
+  pointer-events: none;
+  transition: transform 0.15s ease-out;
+  transform: translateY(-100px) scale(0.8);
+}
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3rem);
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0px solid rgba(67, 89, 113, 0.2);
+  border-radius: 0.5rem;
+  outline: 0;
+}
+
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0.25rem;
+  border-bottom: 0px solid #4527A0;
+  border-top-left-radius: calc(0.5rem - 0px);
+  border-top-right-radius: calc(0.5rem - 0px);
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.53;
+  background-color: #4527A0;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1.5rem;
+}
