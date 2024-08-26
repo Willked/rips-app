@@ -108,8 +108,8 @@ export class OtrosServiciosComponent implements OnInit {
       valorunit: this.form.value.valorunit,
       valor: valorOutput
     };
-    this.items= this.otrosArray.length;
     this.otrosArray.push(newService);
+    this.items= this.otrosArray.length;
     this.sendOtrosServicios.emit(this.otrosArray);
     this.sendSubtotal.emit(this.totalValue);
   }
