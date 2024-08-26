@@ -73,7 +73,7 @@ export class ProcedimientosComponent implements OnInit {
   get f(): { [key: string]: AbstractControl } { return this.form.controls; }
   get g(): { [key: string]: AbstractControl } { return this.formModal.controls; }
 
-    // Busca el médico del procedimiento
+  // Busca el médico del procedimiento
   searchMD(cod:number): void {
     this.documentoMedico = "";
     this.tipoDocumentoMedico = "";
@@ -83,8 +83,8 @@ export class ProcedimientosComponent implements OnInit {
     this.tipoDocumentoMedico = val[0].medico.tipoDocumento;
   }
 
-   // Busca un elemento del arreglo de procedimientos por el id
-   searchArray(id:number): any { return this.procedimientos.filter(procedimiento => procedimiento.id === id) }
+  // Busca un elemento del arreglo de procedimientos por el id
+  searchArray(id:number): any { return this.procedimientos.filter(procedimiento => procedimiento.id === id) }
 
   onSubmit(): void {
     this.submitted = true;

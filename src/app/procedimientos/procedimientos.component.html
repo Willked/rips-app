@@ -161,7 +161,7 @@
                 <td class="align-middle">
                   <button type="button" (click)="openModal(myModalContent, proc.id)" class="btn btn-success" data-bs-toggle="tooltip" title="Editar"><b><i class="bi bi-pencil"></i></b></button>
                   &nbsp;
-                  <button type="button" (click)="onRemove(proc.id)" class="btn btn-danger"><b><i class="bi bi-trash3"></i></b></button>
+                  <button type="button" (click)="onRemove(proc.id)" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar"><b><i class="bi bi-trash3"></i></b></button>
                 </td>
             </tr>
           </tbody>
@@ -190,11 +190,11 @@
                   type="date"
                   formControlName="fechaModal"
                   class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f['fechaModal'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && g['fechaModal'].errors }"
                   value="{{ currentDate | date: 'dd/MM/yyyy' }}"
                 />
-                <div *ngIf="submitted && f['fechaModal'].errors" class="invalid-feedback">
-                  <div *ngIf="f['fechaModal'].errors['required']">* Campo requerido</div>
+                <div *ngIf="submitted && g['fechaModal'].errors" class="invalid-feedback">
+                  <div *ngIf="g['fechaModal'].errors['required']">* Campo requerido</div>
                 </div>
               </div>
             </div>
@@ -205,10 +205,10 @@
                   type="time"
                   formControlName="horaModal"
                   class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f['horaModal'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && g['horaModal'].errors }"
                 />
-                <div *ngIf="submitted && f['horaModal'].errors" class="invalid-feedback">
-                  <div *ngIf="f['horaModal'].errors['required']">* Campo requerido</div>
+                <div *ngIf="submitted && g['horaModal'].errors" class="invalid-feedback">
+                  <div *ngIf="g['horaModal'].errors['required']">* Campo requerido</div>
                 </div>
               </div>
             </div>
@@ -220,10 +220,10 @@
                   type="text"
                   formControlName="codigoModal"
                   class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f['codigoModal'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && g['codigoModal'].errors }"
                 />
-                <div *ngIf="submitted && f['codigoModal'].errors" class="invalid-feedback">
-                  <div *ngIf="f['codigoModal'].errors['required']">* Campo requerido</div>
+                <div *ngIf="submitted && g['codigoModal'].errors" class="invalid-feedback">
+                  <div *ngIf="g['codigoModal'].errors['required']">* Campo requerido</div>
                 </div>
               </div>
             </div>
@@ -285,11 +285,11 @@
                   type="number"
                   formControlName="valorModal"
                   class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && f['valorModal'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && g['valorModal'].errors }"
                 />
-                <div *ngIf="submitted && f['valorModal'].errors" class="invalid-feedback">
-                  <div *ngIf="f['valorModal'].errors['required']">* Campo requerido</div>
-                  <div *ngIf="f['valorModal'].errors['min']">* Valor mayor a 0</div>
+                <div *ngIf="submitted && g['valorModal'].errors" class="invalid-feedback">
+                  <div *ngIf="g['valorModal'].errors['required']">* Campo requerido</div>
+                  <div *ngIf="g['valorModal'].errors['min']">* Valor mayor a 0</div>
                 </div>
               </div>
             </div>

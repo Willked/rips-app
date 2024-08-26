@@ -139,8 +139,8 @@ export class RipsJsonComponent implements OnInit {
         "codMunicipioResidencia": this.form.value.municipio,
         "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
         "incapacidad": this.form.value.incapacidad,
-        "consecutivo": 1,
-        "codPaisOrigen": "170"
+        "codPaisOrigen": "170",
+        "consecutivo": "1"
         }
       ];
     this.json.push("usuarios", newValue);
@@ -215,7 +215,7 @@ export class RipsJsonComponent implements OnInit {
         "conceptoRecaudo": "05",
         "valorPagoModerador": "0",
         "numFEVPagoModerador": "null",
-        "consecutivo": i++,
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
@@ -246,7 +246,7 @@ export class RipsJsonComponent implements OnInit {
         "conceptoRecaudo": "05",
         "valorPagoModerador": "0",
         "numFEVPagoModerador": "null",
-        "consecutivo": i++,
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
@@ -260,21 +260,21 @@ export class RipsJsonComponent implements OnInit {
     this.arrayOtrosServicios.map((dato) => {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
-        "numAutorizacion": null,
-        "idMIPRES": null,
+        "numAutorizacion": "null",
+        "idMIPRES": "null",
         "fechaSuministroTecnologia": dato.fecha + " " + dato.hora,
         "tipoOS": "01",
         "codTecnologiaSalud": dato.tecnologia,
         "nomTecnologiaSalud": dato.nomTecnologia,
-        "cantidadOS": dato.cantidad,
+        "cantidadOS": dato.cantidad.toString(),
         "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
         "numDocumentoIdentificacion": dato.documentoMedico,
-        "vrUnitOS": dato.valorunit,
-        "vrServicio": dato.valor,
+        "vrUnitOS": dato.valorunit.toString(),
+        "vrServicio": dato.valor.toString(),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": 0,
-        "numFEVPagoModerador": null,
-        "consecutivo": i++,
+        "valorPagoModerador": "0",
+        "numFEVPagoModerador": "null",
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
