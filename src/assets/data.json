@@ -76,10 +76,6 @@
   ],
   "diagnosticos":[
     {
-      "codigo": "",
-      "nombre": "Seleccione una opción"
-    },
-    {
       "codigo": "K040",
       "nombre": "Pulpitis"
     },

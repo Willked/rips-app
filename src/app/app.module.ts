@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RipsFormComponent } from './rips-form/rips-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConsultasComponent } from './consultas/consultas.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +18,6 @@ import { OtrosServiciosComponent } from './otros-servicios/otros-servicios.compo
 @NgModule({
   declarations: [
     AppComponent,
-    RipsFormComponent,
     ConsultasComponent,
     RipsJsonComponent,
     ProcedimientosComponent,

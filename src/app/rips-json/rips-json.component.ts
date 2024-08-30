@@ -34,6 +34,10 @@ export class RipsJsonComponent implements OnInit {
   arrayProcedimientos: any[] = [];
   arrayOtrosServicios: any[] = [];
   numeroFactura = "";
+  tConsultas = 0;
+  tProcedimientos = 0;
+  tServicios = 0;
+  totalFactura = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,7 +79,6 @@ export class RipsJsonComponent implements OnInit {
     this.submitted = true;
 
     if (this.form.invalid) {
-      console.log(this.form.invalid);
       const firstInvalidControl: HTMLElement = Object.keys(this.form.controls)
     .filter(key => this.form.controls[key].invalid)
     .map(key => document.querySelector(`[formControlName="${key}"]`))
@@ -90,13 +93,10 @@ export class RipsJsonComponent implements OnInit {
     this.createServices();
 
     this.downloadRequestObject();
-    console.log(JSON.stringify(this.json, null, 2));
-    // console.log(JSON.stringify(this.arrayConsultas, null, 2));
-
   }
 
   convertToJsonFile(){
-    const jsonString = JSON.stringify(this.json);
+    const jsonString = JSON.stringify(this.json, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
     return blob
   }
@@ -139,8 +139,8 @@ export class RipsJsonComponent implements OnInit {
         "codMunicipioResidencia": this.form.value.municipio,
         "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
         "incapacidad": this.form.value.incapacidad,
-        "consecutivo": 1,
-        "codPaisOrigen": "170"
+        "codPaisOrigen": "170",
+        "consecutivo": "1"
         }
       ];
     this.json.push("usuarios", newValue);
@@ -150,14 +150,31 @@ export class RipsJsonComponent implements OnInit {
     this.arrayConsultas = event;
   }
 
+  getSubtotalConsultas(event:any): void {
+    this.tConsultas = Number(event);
+    this.sumar();
+  }
+
   getProcedimientos(event:any): void {
     this.arrayProcedimientos = event;
-    console.log("llego aqui procedimientos");
+  }
+
+  getSubtotalProcedimientos(event:any): void {
+    this.tProcedimientos = Number(event);
+    this.sumar();
   }
 
   getOtrosServicios(event:any): void {
     this.arrayOtrosServicios = event;
-    console.log("llego otros servicios");
+  }
+
+  getSubtotalServicios(event:any): void {
+    this.tServicios = Number(event);
+    this.sumar();
+  }
+
+  sumar(): void {
+    this.totalFactura = this.tConsultas + this.tProcedimientos + this.tServicios;
   }
 
   createServices(): void {
@@ -180,25 +197,25 @@ export class RipsJsonComponent implements OnInit {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
         "fechaInicioAtencion": consulta.fecConsulta + " " + consulta.horaConsulta,
-        "numAutorizacion": null,
+        "numAutorizacion": "null",
         "codConsulta": consulta.codConsulta,
         "modalidadGrupoServicioTecSal": "01",
         "grupoServicios": "01",
-        "codServicio": 334,
+        "codServicio": "334",
         "finalidadTecnologiaSalud": consulta.tipoDx,
         "causaMotivoAtencion": "23", // Accidente de tránsito de origen común
         "codDiagnosticoPrincipal": consulta.dxPrincipal,
         "codDiagnosticoRelacionado1": consulta.dxRelacionado1,
-        "codDiagnosticoRelacionado2": null,
-        "codDiagnosticoRelacionado3": null,
+        "codDiagnosticoRelacionado2": "null",
+        "codDiagnosticoRelacionado3": "null",
         "tipoDiagnosticoPrincipal": consulta.tipoDxConsulta,
         "tipoDocumentoIdentificacion": consulta.tipoDocumentoMedico,
         "numDocumentoIdentificacion": consulta.documentoMedico,
-        "vrServicio": consulta.valor,
+        "vrServicio": consulta.valorConsulta.toString(),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": 0,
-        "numFEVPagoModerador": null,
-        "consecutivo": i++,
+        "valorPagoModerador": "0",
+        "numFEVPagoModerador": "null",
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
@@ -212,8 +229,8 @@ export class RipsJsonComponent implements OnInit {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
         "fechaInicioAtencion": dato.fecha + " " + dato.hora,
-        "idMIPRES": null,
-        "numAutorizacion": null,
+        "idMIPRES": "null",
+        "numAutorizacion": "null",
         "codProcedimiento": dato.codigo,
         "viaIngresoServicioSalud": dato.viaIngreso,
         "modalidadGrupoServicioTecSal": "01",
@@ -225,11 +242,11 @@ export class RipsJsonComponent implements OnInit {
         "codDiagnosticoPrincipal": dato.dxPrincipal,
         "codDiagnosticoRelacionado": dato.dxRelacionado1,
         "codComplicacion": "S025",
-        "vrServicio": dato.valor,
+        "vrServicio": dato.valor.toString(),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": 0,
-        "numFEVPagoModerador": null,
-        "consecutivo": i++,
+        "valorPagoModerador": "0",
+        "numFEVPagoModerador": "null",
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
@@ -243,21 +260,21 @@ export class RipsJsonComponent implements OnInit {
     this.arrayOtrosServicios.map((dato) => {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
-        "numAutorizacion": null,
-        "idMIPRES": null,
+        "numAutorizacion": "null",
+        "idMIPRES": "null",
         "fechaSuministroTecnologia": dato.fecha + " " + dato.hora,
         "tipoOS": "01",
         "codTecnologiaSalud": dato.tecnologia,
         "nomTecnologiaSalud": dato.nomTecnologia,
-        "cantidadOS": dato.cantidad,
+        "cantidadOS": dato.cantidad.toString(),
         "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
         "numDocumentoIdentificacion": dato.documentoMedico,
-        "vrUnitOS": dato.valorunit,
-        "vrServicio": dato.valor,
+        "vrUnitOS": dato.valorunit.toString(),
+        "vrServicio": dato.valor.toString(),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": 0,
-        "numFEVPagoModerador": null,
-        "consecutivo": i++,
+        "valorPagoModerador": "0",
+        "numFEVPagoModerador": "null",
+        "consecutivo": (i++).toString()
       }
       newArray.push(newValue);
     });
