@@ -72,6 +72,16 @@
       "codigo": "890303",
       "nombre": "CONSULTA CONTROL POR ODONTOLOGIA GENERAL - 890303",
       "precio": "29300"
+    },
+    {
+      "codigo": "890203",
+      "nombre": "CONSULTA DE PRIMERA VEZ POR ODONTOLOGIA GENERAL - 890203",
+      "precio": "0"
+    },
+    {
+      "codigo": "890204",
+      "nombre": "CONSULTA DE PRIMERA VEZ POR ODONTOLOGIA ESPECIALIZADA - 890204",
+      "precio": "0"
     }
   ],
   "diagnosticos":[

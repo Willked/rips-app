@@ -88,11 +88,45 @@ export class RipsJsonComponent implements OnInit {
       return;
     }
 
-    this.createJsonTransaccion();
-    this.createUsersJson();
-    this.createServices();
+    // this.createJsonTransaccion();
+    // this.createUsersJson();
+    // this.createServices();
+    this.temporaryMethode();
 
     this.downloadRequestObject();
+  }
+
+  temporaryMethode(): void {
+
+    this.numeroFactura = this.form.value.numFactura;
+    const newValue = {
+        "numDocumentoIdObligado": this.datosClinica[0].nit,
+        "numFactura": this.form.value.numFactura,
+        "tipoNota": this.form.value.tipoNota != "null" ? this.form.value.tipoNota : null,
+        "numNota": this.form.value.numNota != "" ? this.form.value.numNota : null,
+        "usuarios": [
+          {
+          "tipoDocumentoIdentificacion": this.form.value.tipoDocumento,
+          "numDocumentoIdentificacion": this.form.value.numDocumento,
+          "consecutivo": 1,
+          "tipoUsuario": this.form.value.tipoUsuario,
+          "fechaNacimiento": this.form.value.fecNacimiento,
+          "codSexo": this.form.value.sexo,
+          "codPaisResidencia": "170",
+          "codMunicipioResidencia": this.form.value.municipio,
+          "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
+          "incapacidad": this.form.value.incapacidad,
+          "codPaisOrigen": "170",
+          "servicios": {
+            "consultas": this.createConsultas(),
+            "procedimientos": this.createProcedimientos(),
+            "otrosServicios": this.createOtrosServicios()
+          }
+          }
+        ]
+
+      };
+    this.json.push(newValue);
   }
 
   convertToJsonFile(){
@@ -116,35 +150,35 @@ export class RipsJsonComponent implements OnInit {
     this.form.reset();
   }
 
-  createJsonTransaccion(): void {
-    this.numeroFactura = this.form.value.numFactura;
-    const newValue = {
-        "numDocumentoIdObligado": this.datosClinica[0].nit,
-        "numFactura": this.form.value.numFactura,
-        "tipoNota": this.form.value.tipoNota,
-        "numNota": this.form.value.numNota,
-      };
-    this.json.push(newValue);
-  }
+  // createJsonTransaccion(): void {
+  //   this.numeroFactura = this.form.value.numFactura;
+  //   const newValue = {
+  //       "numDocumentoIdObligado": this.datosClinica[0].nit,
+  //       "numFactura": this.form.value.numFactura,
+  //       "tipoNota": this.form.value.tipoNota,
+  //       "numNota": this.form.value.numNota,
+  //     };
+  //   this.json.push(newValue);
+  // }
 
-  createUsersJson(): void {
-    const newValue = [
-        {
-        "tipoDocumentoIdentificacion": this.form.value.tipoDocumento,
-        "numDocumentoIdentificacion": this.form.value.numDocumento,
-        "tipoUsuario": this.form.value.tipoUsuario,
-        "fechaNacimiento": this.form.value.fecNacimiento,
-        "codSexo": this.form.value.sexo,
-        "codPaisResidencia": "170",
-        "codMunicipioResidencia": this.form.value.municipio,
-        "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
-        "incapacidad": this.form.value.incapacidad,
-        "codPaisOrigen": "170",
-        "consecutivo": "1"
-        }
-      ];
-    this.json.push("usuarios", newValue);
-  }
+  // createUsersJson(): void {
+  //   const newValue = [
+  //       {
+  //       "tipoDocumentoIdentificacion": this.form.value.tipoDocumento,
+  //       "numDocumentoIdentificacion": this.form.value.numDocumento,
+  //       "consecutivo": 1,
+  //       "tipoUsuario": this.form.value.tipoUsuario,
+  //       "fechaNacimiento": this.form.value.fecNacimiento,
+  //       "codSexo": this.form.value.sexo,
+  //       "codPaisResidencia": "170",
+  //       "codMunicipioResidencia": this.form.value.municipio,
+  //       "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
+  //       "incapacidad": this.form.value.incapacidad,
+  //       "codPaisOrigen": "170",
+  //       }
+  //     ];
+  //   this.json.push("usuarios", newValue);
+  // }
 
   getConsultas(event:any): void {
     this.arrayConsultas = event;
@@ -177,45 +211,46 @@ export class RipsJsonComponent implements OnInit {
     this.totalFactura = this.tConsultas + this.tProcedimientos + this.tServicios;
   }
 
-  createServices(): void {
-    const newValue = {
-      "consultas": this.createConsultas(),
-      // "medicamentos": [],
-      "procedimientos": this.createProcedimientos(),
-      // "urgencias": [],
-      // "hospitalizacion": [],
-      // "recienNacidos": [],
-      "otrosServicios": this.createOtrosServicios()
-      }
-    this.json.push("servicios", newValue);
-  }
+  // createServices(): void {
+  //   const newValue = {
+  //     "consultas": this.createConsultas(),
+  //     // "medicamentos": [],
+  //     "procedimientos": this.createProcedimientos(),
+  //     // "urgencias": [],
+  //     // "hospitalizacion": [],
+  //     // "recienNacidos": [],
+  //     "otrosServicios": this.createOtrosServicios()
+  //     }
+  //   this.json.push("servicios", newValue);
+  // }
 
   createConsultas(): any[] {
     let newArray:any[] = [];
     let i = 1;
+
     this.arrayConsultas.map((consulta) => {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
         "fechaInicioAtencion": consulta.fecConsulta + " " + consulta.horaConsulta,
-        "numAutorizacion": "null",
         "codConsulta": consulta.codConsulta,
+        "numAutorizacion": null,
         "modalidadGrupoServicioTecSal": "01",
         "grupoServicios": "01",
-        "codServicio": "334",
-        "finalidadTecnologiaSalud": consulta.tipoDx,
-        "causaMotivoAtencion": "23", // Accidente de tránsito de origen común
+        "finalidadTecnologiaSalud": parseInt(consulta.tipoDx),
+        "causaMotivoAtencion": 23, // Accidente de tránsito de origen común
+        "codServicio": 334,
         "codDiagnosticoPrincipal": consulta.dxPrincipal,
-        "codDiagnosticoRelacionado1": consulta.dxRelacionado1,
-        "codDiagnosticoRelacionado2": "null",
-        "codDiagnosticoRelacionado3": "null",
-        "tipoDiagnosticoPrincipal": consulta.tipoDxConsulta,
+        "tipoDiagnosticoPrincipal": "0"+consulta.tipoDxConsulta,
+        "codDiagnosticoRelacionado1": consulta.dxRelacionado1 != 0 ? consulta.dxRelacionado1 : null,
+        "codDiagnosticoRelacionado2": null,
+        "codDiagnosticoRelacionado3": null,
         "tipoDocumentoIdentificacion": consulta.tipoDocumentoMedico,
         "numDocumentoIdentificacion": consulta.documentoMedico,
-        "vrServicio": consulta.valorConsulta.toString(),
+        "vrServicio": parseInt(consulta.valorConsulta),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": "0",
-        "numFEVPagoModerador": "null",
-        "consecutivo": (i++).toString()
+        "valorPagoModerador": 0,
+        "numFEVPagoModerador": null,
+        "consecutivo": i++
       }
       newArray.push(newValue);
     });
@@ -229,24 +264,24 @@ export class RipsJsonComponent implements OnInit {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
         "fechaInicioAtencion": dato.fecha + " " + dato.hora,
-        "idMIPRES": "null",
-        "numAutorizacion": "null",
+        "idMIPRES": null,
+        "numAutorizacion": null,
         "codProcedimiento": dato.codigo,
         "viaIngresoServicioSalud": dato.viaIngreso,
         "modalidadGrupoServicioTecSal": "01",
         "grupoServicios": "01",
-        "codServicio": dato.tipoProcedimiento,
+        "codServicio": parseInt(dato.tipoProcedimiento),
         "finalidadTecnologiaSalud": dato.tipoDx,
         "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
         "numDocumentoIdentificacion": dato.documentoMedico,
         "codDiagnosticoPrincipal": dato.dxPrincipal,
         "codDiagnosticoRelacionado": dato.dxRelacionado1,
         "codComplicacion": "S025",
-        "vrServicio": dato.valor.toString(),
+        "vrServicio": parseInt(dato.valor.toString()),
         "conceptoRecaudo": "05",
-        "valorPagoModerador": "0",
-        "numFEVPagoModerador": "null",
-        "consecutivo": (i++).toString()
+        "valorPagoModerador": 0,
+        "numFEVPagoModerador": null,
+        "consecutivo": i++
       }
       newArray.push(newValue);
     });
@@ -260,21 +295,21 @@ export class RipsJsonComponent implements OnInit {
     this.arrayOtrosServicios.map((dato) => {
       const newValue = {
         "codPrestador": this.datosClinica[0].codigo,
-        "numAutorizacion": "null",
-        "idMIPRES": "null",
+        "numAutorizacion": null,
+        "idMIPRES": null,
         "fechaSuministroTecnologia": dato.fecha + " " + dato.hora,
         "tipoOS": "01",
         "codTecnologiaSalud": dato.tecnologia,
         "nomTecnologiaSalud": dato.nomTecnologia,
-        "cantidadOS": dato.cantidad.toString(),
+        "cantidadOS": dato.cantidad,
         "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
         "numDocumentoIdentificacion": dato.documentoMedico,
-        "vrUnitOS": dato.valorunit.toString(),
-        "vrServicio": dato.valor.toString(),
+        "vrUnitOS": dato.valorunit,
+        "vrServicio": dato.valor,
         "conceptoRecaudo": "05",
-        "valorPagoModerador": "0",
-        "numFEVPagoModerador": "null",
-        "consecutivo": (i++).toString()
+        "valorPagoModerador": 0,
+        "numFEVPagoModerador": null,
+        "consecutivo": i++
       }
       newArray.push(newValue);
     });
