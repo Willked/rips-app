@@ -236,8 +236,8 @@ export class RipsJsonComponent implements OnInit {
         "numAutorizacion": null,
         "modalidadGrupoServicioTecSal": "01",
         "grupoServicios": "01",
-        "finalidadTecnologiaSalud": parseInt(consulta.tipoDx),
-        "causaMotivoAtencion": 23, // Accidente de tránsito de origen común
+        "finalidadTecnologiaSalud": consulta.tipoDx,
+        "causaMotivoAtencion": "23", // Accidente de tránsito de origen común
         "codServicio": 334,
         "codDiagnosticoPrincipal": consulta.dxPrincipal,
         "tipoDiagnosticoPrincipal": "0"+consulta.tipoDxConsulta,
@@ -301,7 +301,7 @@ export class RipsJsonComponent implements OnInit {
         "tipoOS": "01",
         "codTecnologiaSalud": dato.tecnologia,
         "nomTecnologiaSalud": dato.nomTecnologia,
-        "cantidadOS": dato.cantidad,
+        "cantidadOS": parseInt(dato.cantidad),
         "tipoDocumentoIdentificacion": dato.tipoDocumentoMedico,
         "numDocumentoIdentificacion": dato.documentoMedico,
         "vrUnitOS": dato.valorunit,
