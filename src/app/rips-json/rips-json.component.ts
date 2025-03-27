@@ -88,9 +88,6 @@ export class RipsJsonComponent implements OnInit {
       return;
     }
 
-    // this.createJsonTransaccion();
-    // this.createUsersJson();
-    // this.createServices();
     this.temporaryMethode();
 
     this.downloadRequestObject();
@@ -130,9 +127,9 @@ export class RipsJsonComponent implements OnInit {
   }
 
   convertToJsonFile(){
-    const jsonString = JSON.stringify(this.json, null, 2);
+    const jsonString = JSON.stringify(this.json[0], null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
-    return blob
+    return blob;
   }
 
   downloadRequestObject(){
@@ -150,35 +147,17 @@ export class RipsJsonComponent implements OnInit {
     this.form.reset();
   }
 
-  // createJsonTransaccion(): void {
-  //   this.numeroFactura = this.form.value.numFactura;
-  //   const newValue = {
-  //       "numDocumentoIdObligado": this.datosClinica[0].nit,
-  //       "numFactura": this.form.value.numFactura,
-  //       "tipoNota": this.form.value.tipoNota,
-  //       "numNota": this.form.value.numNota,
-  //     };
-  //   this.json.push(newValue);
-  // }
-
-  // createUsersJson(): void {
-  //   const newValue = [
-  //       {
-  //       "tipoDocumentoIdentificacion": this.form.value.tipoDocumento,
-  //       "numDocumentoIdentificacion": this.form.value.numDocumento,
-  //       "consecutivo": 1,
-  //       "tipoUsuario": this.form.value.tipoUsuario,
-  //       "fechaNacimiento": this.form.value.fecNacimiento,
-  //       "codSexo": this.form.value.sexo,
-  //       "codPaisResidencia": "170",
-  //       "codMunicipioResidencia": this.form.value.municipio,
-  //       "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
-  //       "incapacidad": this.form.value.incapacidad,
-  //       "codPaisOrigen": "170",
-  //       }
-  //     ];
-  //   this.json.push("usuarios", newValue);
-  // }
+  limpiarFormulario(): void {
+    this.onReset();
+    this.arrayConsultas = [];
+    this.arrayProcedimientos = [];
+    this.arrayOtrosServicios = [];
+    this.tConsultas = 0;
+    this.tProcedimientos = 0;
+    this.tServicios = 0;
+    this.totalFactura = 0;
+    window.location.reload();
+  }
 
   getConsultas(event:any): void {
     this.arrayConsultas = event;
@@ -210,19 +189,6 @@ export class RipsJsonComponent implements OnInit {
   sumar(): void {
     this.totalFactura = this.tConsultas + this.tProcedimientos + this.tServicios;
   }
-
-  // createServices(): void {
-  //   const newValue = {
-  //     "consultas": this.createConsultas(),
-  //     // "medicamentos": [],
-  //     "procedimientos": this.createProcedimientos(),
-  //     // "urgencias": [],
-  //     // "hospitalizacion": [],
-  //     // "recienNacidos": [],
-  //     "otrosServicios": this.createOtrosServicios()
-  //     }
-  //   this.json.push("servicios", newValue);
-  // }
 
   createConsultas(): any[] {
     let newArray:any[] = [];
