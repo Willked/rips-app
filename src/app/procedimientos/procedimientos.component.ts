@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataGeneralService } from '../data-general.service';
-import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-procedimientos',
@@ -34,7 +34,7 @@ export class ProcedimientosComponent implements OnInit {
 
   currentDate = new Date().toISOString().substring(0, 10);
   currentTime = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false });
-  procedimientos:any[] = [];
+  procedimientos: any[] = [];
   lastId = 0;
   submitted = false;
   datosClinica: any[] = [];
@@ -60,8 +60,8 @@ export class ProcedimientosComponent implements OnInit {
       tipoProcedimiento: ['334', []],
       tipoDx: ['15', []],
       viaIngreso: ['02', [Validators.required]],
-      dxPrincipal: ['S025', [Validators.required]],
-      dxRelacionado1: ['K040', [Validators.required]],
+      dxPrincipal: ['K081', [Validators.required]],
+      dxRelacionado1: ['S025', [Validators.required]],
       valor: ['0', [Validators.required, Validators.min(1)]]
     });
     this.dataGeneralService.getData().subscribe(data => {
@@ -74,7 +74,7 @@ export class ProcedimientosComponent implements OnInit {
   get g(): { [key: string]: AbstractControl } { return this.formModal.controls; }
 
   // Busca el médico del procedimiento
-  searchMD(cod:number): void {
+  searchMD(cod: number): void {
     this.documentoMedico = "";
     this.tipoDocumentoMedico = "";
 
@@ -84,7 +84,7 @@ export class ProcedimientosComponent implements OnInit {
   }
 
   // Busca un elemento del arreglo de procedimientos por el id
-  searchArray(id:number): any { return this.procedimientos.filter(procedimiento => procedimiento.id === id) }
+  searchArray(id: number): any { return this.procedimientos.filter(procedimiento => procedimiento.id === id) }
 
   onSubmit(): void {
     this.submitted = true;
@@ -102,24 +102,24 @@ export class ProcedimientosComponent implements OnInit {
       id: this.lastId
     };
     this.procedimientos.push(newValueWithId);
-    this.items= this.procedimientos.length;
+    this.items = this.procedimientos.length;
     this.sendProcedimientos.emit(this.procedimientos);
     this.sendSubtotal.emit(this.totalValue);
   }
 
   // Elimina un procedimiento del arreglo
-  onRemove(id:number): void {
+  onRemove(id: number): void {
     this.submitted = false;
     let tmp = this.searchArray(id);
     this.procedimientos = this.procedimientos.filter(procedimiento => procedimiento.id !== id)
-    this.items= this.procedimientos.length;
+    this.items = this.procedimientos.length;
     this.sendProcedimientos.emit(this.procedimientos);
     this.totalValue -= Number(tmp[0].valor);
     this.sendSubtotal.emit(this.totalValue);
   }
 
   // Abre el modal de edición del procedimiento
-  openModal(content:any, id:number): void {
+  openModal(content: any, id: number): void {
     this.submitted = false;
 
     this.modalService.open(content);

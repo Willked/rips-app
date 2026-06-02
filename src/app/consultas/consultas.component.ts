@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataGeneralService } from '../data-general.service';
-import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-consultas',
@@ -39,7 +39,7 @@ export class ConsultasComponent implements OnInit {
   });
   currentDate = new Date().toISOString().substring(0, 10);
   currentTime = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false });
-  consultas:any[] = [];
+  consultas: any[] = [];
   lastId = 0;
   submitted = false;
   datosClinica: any[] = [];
@@ -68,8 +68,8 @@ export class ConsultasComponent implements OnInit {
       tipoConsulta: ['334', []],
       valorConsulta: ['0', [Validators.required]],
       tipoDx: ['15', []],
-      dxPrincipal: ['S025', [Validators.required]],
-      dxRelacionado1: ['K040'],
+      dxPrincipal: ['K081', [Validators.required]],
+      dxRelacionado1: ['S025'],
       tipoDxConsulta: ['2', []]
     });
     this.dataGeneralService.getData().subscribe(data => {
@@ -83,7 +83,7 @@ export class ConsultasComponent implements OnInit {
   get g(): { [key: string]: AbstractControl } { return this.formModal.controls; }
 
   // Busca el médico de la consulta
-  searchMD(cod:number): void {
+  searchMD(cod: number): void {
     this.documentoMedico = "";
     this.tipoDocumentoMedico = "";
 
@@ -97,7 +97,7 @@ export class ConsultasComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
 
-    if(selectedValue == ""){
+    if (selectedValue == "") {
       this.form.value.valorConsulta = 0;
       this.valorOutput = 0;
       return;
@@ -108,7 +108,7 @@ export class ConsultasComponent implements OnInit {
   }
 
   // Busca un elemento del arreglo de consultas por el id
-  searchArray(id:number): any { return this.consultas.filter(consulta => consulta.id === id) }
+  searchArray(id: number): any { return this.consultas.filter(consulta => consulta.id === id) }
 
   onSubmit(): void {
     this.submitted = true;
@@ -131,19 +131,19 @@ export class ConsultasComponent implements OnInit {
   }
 
   // Elimina una consulta del arreglo
-  onRemove(id:number): void {
+  onRemove(id: number): void {
     this.submitted = false;
     let consultaSearch = this.searchArray(id);
     this.totalValue -= Number(consultaSearch[0].valorConsulta);
 
     this.consultas = this.consultas.filter(consulta => consulta.id !== id);
-    this.items= this.consultas.length;
+    this.items = this.consultas.length;
 
     this.sendSubtotal.emit(this.totalValue);
   }
 
   // Abre el modal de edición de la consulta
-  openModal(content:any, id:number): void {
+  openModal(content: any, id: number): void {
     this.submitted = false;
 
     this.modalService.open(content);
