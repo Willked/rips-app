@@ -18,6 +18,7 @@ export class RipsJsonComponent implements OnInit {
     tipoDocumento: new FormControl(''),
     numDocumento: new FormControl(''),
     tipoUsuario: new FormControl(''),
+    codigoSIRAS: new FormControl(''),
     fecNacimiento: new FormControl(''),
     sexo: new FormControl(''),
     municipio: new FormControl(''),
@@ -54,12 +55,18 @@ export class RipsJsonComponent implements OnInit {
       tipoDocumento: ['CC', []],
       numDocumento: ['', [Validators.required]],
       tipoUsuario: ['10', []],
+      codigoSIRAS: ['', []],
       fecNacimiento: ['', [Validators.required]],
       sexo: ['M', []],
       municipio: ['17380', []],
       zonaResidencia: ['02', []],
       incapacidad: ['NO', []],
     });
+    this.actualizarValidacionCodigoSIRAS(this.form.value.tipoUsuario);
+    this.form.get('tipoUsuario')?.valueChanges.subscribe((tipoUsuario) => {
+      this.actualizarValidacionCodigoSIRAS(tipoUsuario);
+    });
+
     this.ciudadesService.getData().subscribe(data => {
       this.ciudades = data;
     });
@@ -72,6 +79,19 @@ export class RipsJsonComponent implements OnInit {
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
+  }
+
+  actualizarValidacionCodigoSIRAS(tipoUsuario: string): void {
+    const codigoSIRAS = this.form.get('codigoSIRAS');
+    if (!codigoSIRAS) {
+      return;
+    }
+    if (tipoUsuario === '10') {
+      codigoSIRAS.setValidators([Validators.required, Validators.pattern(/.*\S.*/)]);
+    } else {
+      codigoSIRAS.clearValidators();
+    }
+    codigoSIRAS.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -124,6 +144,7 @@ export class RipsJsonComponent implements OnInit {
           "numDocumentoIdentificacion": this.form.value.numDocumento,
           "consecutivo": 1,
           "tipoUsuario": this.form.value.tipoUsuario,
+          "registroSIRAS": this.form.value.tipoUsuario === '10' ? this.form.value.codigoSIRAS : null,
           "fechaNacimiento": this.form.value.fecNacimiento,
           "codSexo": this.form.value.sexo,
           "codPaisResidencia": "170",
@@ -131,7 +152,7 @@ export class RipsJsonComponent implements OnInit {
           "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
           "incapacidad": this.form.value.incapacidad,
           "codPaisOrigen": "170",
-          "servicios": servicios
+          "servicios": servicios,
         }
       ]
 
