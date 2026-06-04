@@ -140,11 +140,10 @@ export class RipsJsonComponent implements OnInit {
       "numNota": this.form.value.numNota != "" ? this.form.value.numNota : null,
       "usuarios": [
         {
+          "consecutivo": 1,
           "tipoDocumentoIdentificacion": this.form.value.tipoDocumento,
           "numDocumentoIdentificacion": this.form.value.numDocumento,
-          "consecutivo": 1,
           "tipoUsuario": this.form.value.tipoUsuario,
-          "registroSIRAS": this.form.value.tipoUsuario === '10' ? this.form.value.codigoSIRAS : null,
           "fechaNacimiento": this.form.value.fecNacimiento,
           "codSexo": this.form.value.sexo,
           "codPaisResidencia": "170",
@@ -152,6 +151,7 @@ export class RipsJsonComponent implements OnInit {
           "codZonaTerritorialResidencia": this.form.value.zonaResidencia,
           "incapacidad": this.form.value.incapacidad,
           "codPaisOrigen": "170",
+          "registroSIRAS": this.form.value.tipoUsuario === '10' ? this.form.value.codigoSIRAS : null,
           "servicios": servicios,
         }
       ]
@@ -240,16 +240,25 @@ export class RipsJsonComponent implements OnInit {
         "causaMotivoAtencion": "23", // Accidente de tránsito de origen común
         "codServicio": 334,
         "codDiagnosticoPrincipal": consulta.dxPrincipal,
-        "tipoDiagnosticoPrincipal": "0" + consulta.tipoDxConsulta,
+        "codDiagnosticoPrincipalCIE11": null,
+        "nomCodDiagnosticoPrincipalCIE11": null,
         "codDiagnosticoRelacionado1": consulta.dxRelacionado1 != 0 ? consulta.dxRelacionado1 : null,
+        "codDiagnosticoRelacionado1CIE11": null,
+        "nomCodDiagnosticoRelacionado1CIE11": null,
         "codDiagnosticoRelacionado2": null,
+        "codDiagnosticoRelacionado2CIE11": null,
+        "nomCodDiagnosticoRelacionado2CIE11": null,
         "codDiagnosticoRelacionado3": null,
+        "nomCodDiagnosticoRelacionado3CIE11": null,
+        "codDiagnosticoRelacionado3CIE11": null,
+        "tipoDiagnosticoPrincipal": "0" + consulta.tipoDxConsulta,
         "tipoDocumentoIdentificacion": consulta.tipoDocumentoMedico,
         "numDocumentoIdentificacion": consulta.documentoMedico,
         "vrServicio": parseInt(consulta.valorConsulta),
         "conceptoRecaudo": "05",
         "valorPagoModerador": 0,
         "numFEVPagoModerador": null,
+        "codigoVIDA": null,
         "consecutivo": i++
       }
       newArray.push(newValue);
